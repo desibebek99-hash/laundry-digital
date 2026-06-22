@@ -81,7 +81,18 @@ select{
 </div>
 
 <div class="top-menu">
-
+<input
+    type="text"
+    id="searchInput"
+    placeholder="Cari nama, nomor nota, atau HP..."
+    onkeyup="renderLaundry()"
+    style="
+        width:100%;
+        padding:12px;
+        margin-bottom:15px;
+        border:1px solid #ccc;
+        border-radius:10px;
+    ">
     <a href="index.html" class="btn">
         + Laundry Baru
     </a>
@@ -102,6 +113,11 @@ function renderLaundry(){
     const container =
     document.getElementById("listLaundry");
 
+    const keyword =
+    document.getElementById("searchInput")
+    .value
+    .toLowerCase();
+    
     if(laundries.length === 0){
 
         container.innerHTML =
@@ -117,6 +133,19 @@ function renderLaundry(){
     let html = "";
 
     laundries.forEach((item,index)=>{
+
+    const match =
+        item.name.toLowerCase().includes(keyword)
+        ||
+        item.invoice.toLowerCase().includes(keyword)
+        ||
+        (item.phone || "")
+        .toLowerCase()
+        .includes(keyword);
+
+    if(!match){
+        return;
+    }
 
         html += `
         <div class="card">
