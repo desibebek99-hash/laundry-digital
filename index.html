@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Laundry Digital v1</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    max-width:700px;
+    margin:auto;
+    padding:15px;
+}
+
+.header{
+    background:#2196F3;
+    color:white;
+    text-align:center;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.price-box{
+    background:#f0f7ff;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+}
+
+.price-box h2{
+    color:#2196F3;
+}
+
+.save-btn{
+    width:100%;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    font-size:18px;
+    margin-top:20px;
+    cursor:pointer;
+}
+
+.save-btn:hover{
+    opacity:.9;
+}
+
+.note-box{
+    background:#fff3cd;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🧺 Laundry Digital</h1>
+</div>
+
+<div class="card">
+
+    <div class="input-group">
+        <label>Nama Pelanggan</label>
+        <input type="text" id="customerName">
+    </div>
+
+    <div class="input-group">
+        <label>Nomor HP</label>
+        <input type="text" id="customerPhone">
+    </div>
+
+    <div class="input-group">
+        <label>Jenis Layanan</label>
+
+        <select id="service" onchange="calculateTotal()">
+
+            <option value="7000">
+                Reguler (Rp7.000/kg)
+            </option>
+
+            <option value="12000">
+                Express (Rp12.000/kg)
+            </option>
+
+            <option value="5000">
+                Cuci Saja (Rp5.000/kg)
+            </option>
+
+            <option value="4000">
+                Setrika Saja (Rp4.000/kg)
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="input-group">
+        <label>Berat (Kg)</label>
+
+        <input
+            type="number"
+            id="weight"
+            min="1"
+            value="1"
+            oninput="calculateTotal()">
+    </div>
+
+    <div class="price-box">
+
+        <p>Nomor Nota</p>
+
+        <h2 id="invoiceNumber">
+            LDR-001
+        </h2>
+
+        <br>
+
+        <p>Total Harga</p>
+
+        <h2 id="totalPrice">
+            Rp7.000
+        </h2>
+
+    </div>
+
+    <button
+        class="save-btn"
+        onclick="saveLaundry()">
+
+        Simpan Laundry
+
+    </button>
+
+    <div
+        id="result"
+        class="note-box"
+        style="display:none;">
+    </div>
+
+</div>
+
+<script>
+
+let lastNumber =
+parseInt(
+localStorage.getItem("lastLaundryNumber")
+) || 0;
+
+generateInvoice();
+
+function generateInvoice(){
+
+    const nextNumber =
+    lastNumber + 1;
+
+    document.getElementById(
+        "invoiceNumber"
+    ).innerHTML =
+    "LDR-" +
+    String(nextNumber).padStart(3,"0");
+}
+
+function calculateTotal(){
+
+    const price =
+    parseInt(
+        document.getElementById(
+            "service"
+        ).value
+    );
+
+    const weight =
+    parseFloat(
+        document.getElementById(
+            "weight"
+        ).value
+    ) || 0;
+
+    const total =
+    price * weight;
+
+    document.getElementById(
+        "totalPrice"
+    ).innerHTML =
+    "Rp" +
+    total.toLocaleString("id-ID");
+}
+
+function saveLaundry(){
+
+    const name =
+    document.getElementById(
+        "customerName"
+    ).value.trim();
+
+    const phone =
+    document.getElementById(
+        "customerPhone"
+    ).value.trim();
+
+    const serviceSelect =
+    document.getElementById("service");
+
+    const serviceName =
+    serviceSelect.options[
+        serviceSelect.selectedIndex
+    ].text;
+
+    const price =
+    parseInt(serviceSelect.value);
+
+    const weight =
+    parseFloat(
+        document.getElementById(
+            "weight"
+        ).value
+    );
+
+    if(name === ""){
+
+        alert("Nama pelanggan wajib diisi");
+        return;
+    }
+
+    lastNumber++;
+
+    localStorage.setItem(
+        "lastLaundryNumber",
+        lastNumber
+    );
+
+    const invoice =
+    "LDR-" +
+    String(lastNumber)
+    .padStart(3,"0");
+
+    const total =
+    price * weight;
+
+    let laundries =
+    JSON.parse(
+        localStorage.getItem(
+            "laundries"
+        )
+    ) || [];
+
+    laundries.push({
+
+        invoice:invoice,
+        name:name,
+        phone:phone,
+        service:serviceName,
+        weight:weight,
+        total:total,
+        status:"Diterima",
+        date:new Date()
+        .toLocaleDateString("id-ID")
+
+    });
+
+    localStorage.setItem(
+        "laundries",
+        JSON.stringify(laundries)
+    );
+
+    document.getElementById(
+        "result"
+    ).style.display = "block";
+
+    document.getElementById(
+        "result"
+    ).innerHTML =
+
+    `
+    <strong>Data berhasil disimpan</strong>
+    <br><br>
+
+    Nomor Nota:
+    <strong>${invoice}</strong>
+
+    <br><br>
+
+    Total:
+    <strong>
+    Rp${total.toLocaleString('id-ID')}
+    </strong>
+    `;
+
+    document.getElementById(
+        "customerName"
+    ).value = "";
+
+    document.getElementById(
+        "customerPhone"
+    ).value = "";
+
+    document.getElementById(
+        "weight"
+    ).value = 1;
+
+    calculateTotal();
+
+    generateInvoice();
+}
+
+calculateTotal();
+
+</script>
+
+</body>
+</html>
