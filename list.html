@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Daftar Laundry</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    max-width:800px;
+    margin:auto;
+    padding:15px;
+}
+
+.header{
+    background:#2196F3;
+    color:white;
+    padding:20px;
+    border-radius:15px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.invoice{
+    font-size:18px;
+    font-weight:bold;
+    color:#2196F3;
+}
+
+.status{
+    margin-top:10px;
+}
+
+select{
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.empty{
+    text-align:center;
+    color:#666;
+    padding:30px;
+}
+
+.top-menu{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.btn{
+    flex:1;
+    text-align:center;
+    text-decoration:none;
+    background:#4CAF50;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📋 Daftar Laundry</h1>
+</div>
+
+<div class="top-menu">
+
+    <a href="index.html" class="btn">
+        + Laundry Baru
+    </a>
+
+</div>
+
+<div id="listLaundry"></div>
+
+<script>
+
+let laundries =
+JSON.parse(
+    localStorage.getItem("laundries")
+) || [];
+
+function renderLaundry(){
+
+    const container =
+    document.getElementById("listLaundry");
+
+    if(laundries.length === 0){
+
+        container.innerHTML =
+        `
+        <div class="empty">
+            Belum ada data laundry
+        </div>
+        `;
+
+        return;
+    }
+
+    let html = "";
+
+    laundries.forEach((item,index)=>{
+
+        html += `
+        <div class="card">
+
+            <div class="invoice">
+                ${item.invoice}
+            </div>
+
+            <br>
+
+            <strong>${item.name}</strong><br>
+
+            HP:
+            ${item.phone || '-'}<br>
+
+            ${item.service}<br>
+
+            ${item.weight} Kg<br>
+
+            Rp${item.total.toLocaleString('id-ID')}<br>
+
+            ${item.date}
+
+            <div class="status">
+
+                <select
+                    onchange="changeStatus(${index},this.value)">
+
+                    <option
+                    ${item.status==='Diterima'?'selected':''}>
+                    Diterima
+                    </option>
+
+                    <option
+                    ${item.status==='Dicuci'?'selected':''}>
+                    Dicuci
+                    </option>
+
+                    <option
+                    ${item.status==='Disetrika'?'selected':''}>
+                    Disetrika
+                    </option>
+
+                    <option
+                    ${item.status==='Selesai'?'selected':''}>
+                    Selesai
+                    </option>
+
+                    <option
+                    ${item.status==='Diambil'?'selected':''}>
+                    Diambil
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+function changeStatus(index,status){
+
+    laundries[index].status = status;
+
+    localStorage.setItem(
+        "laundries",
+        JSON.stringify(laundries)
+    );
+
+}
+
+renderLaundry();
+
+</script>
+
+</body>
+</html>
