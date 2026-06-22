@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Dashboard Laundry</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    max-width:800px;
+    margin:auto;
+    padding:15px;
+}
+
+.header{
+    background:#2196F3;
+    color:white;
+    text-align:center;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.menu{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.menu a{
+    flex:1;
+    text-align:center;
+    text-decoration:none;
+    background:#4CAF50;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.value{
+    font-size:32px;
+    font-weight:bold;
+    color:#2196F3;
+    margin-top:10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📊 Dashboard Laundry</h1>
+</div>
+
+<div class="menu">
+    <a href="index.html">➕ Laundry Baru</a>
+    <a href="list.html">📋 Daftar Laundry</a>
+</div>
+
+<div class="card">
+    <h3>Total Transaksi</h3>
+    <div class="value" id="totalTransaksi">0</div>
+</div>
+
+<div class="card">
+    <h3>Total Berat (Kg)</h3>
+    <div class="value" id="totalKg">0</div>
+</div>
+
+<div class="card">
+    <h3>Total Pendapatan</h3>
+    <div class="value" id="totalPendapatan">Rp0</div>
+</div>
+
+<div class="card">
+    <h3>Laundry Belum Diambil</h3>
+    <div class="value" id="belumDiambil">0</div>
+</div>
+
+<script>
+
+const laundries =
+JSON.parse(
+    localStorage.getItem("laundries")
+) || [];
+
+let totalKg = 0;
+let totalPendapatan = 0;
+let belumDiambil = 0;
+
+laundries.forEach(item => {
+
+    totalKg += Number(item.weight);
+
+    totalPendapatan += Number(item.total);
+
+    if(item.status !== "Diambil"){
+
+        belumDiambil++;
+
+    }
+
+});
+
+document.getElementById(
+    "totalTransaksi"
+).innerHTML =
+laundries.length;
+
+document.getElementById(
+    "totalKg"
+).innerHTML =
+totalKg;
+
+document.getElementById(
+    "totalPendapatan"
+).innerHTML =
+"Rp" +
+totalPendapatan.toLocaleString("id-ID");
+
+document.getElementById(
+    "belumDiambil"
+).innerHTML =
+belumDiambil;
+
+</script>
+
+</body>
+</html>
