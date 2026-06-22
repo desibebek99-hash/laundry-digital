@@ -80,18 +80,16 @@ select{
     <h1>📋 Daftar Laundry</h1>
 </div>
 
-<input
-    type="text"
-    id="searchInput"
-    placeholder="Cari nama, nomor nota, atau HP..."
-    onkeyup="renderLaundry()"
-    style="
-        width:100%;
-        padding:12px;
-        margin-bottom:15px;
-        border:1px solid #ccc;
-        border-radius:10px;
-    ">
+<div class="search-container">
+
+    <input
+        type="text"
+        id="searchInput"
+        class="search-box"
+        placeholder="🔍 Cari nama, nomor nota, atau HP..."
+        onkeyup="renderLaundry()">
+
+</div>
 
 <div class="top-menu">
 
