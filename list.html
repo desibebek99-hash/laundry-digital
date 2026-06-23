@@ -329,9 +329,20 @@ function changeStatus(index,status){
         "laundries",
         JSON.stringify(laundries)
     );
+    
+    renderLaundry();
 
 }
+    
+function openNota(invoice){
 
+    window.open(
+        "nota.html?invoice=" + invoice,
+        "_blank"
+    );
+
+}
+    
 function sendWA(index){
 
     let item = laundries[index];
@@ -342,14 +353,7 @@ function sendWA(index){
         return;
 
     }
-function openNota(invoice){
 
-    window.open(
-        "nota.html?invoice=" + invoice,
-        "_blank"
-    );
-
-}
     let hp =
     item.phone.replace(/^0/, "62");
 
