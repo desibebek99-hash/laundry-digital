@@ -440,7 +440,7 @@ function exportBackup(){
 
     };
 
-    const dataStr =
+    const data =
     JSON.stringify(
         backupData,
         null,
@@ -449,28 +449,28 @@ function exportBackup(){
 
     const blob =
     new Blob(
-        [dataStr],
+        [data],
         {
             type:"application/json"
         }
     );
 
-    const url =
-    URL.createObjectURL(blob);
-
-    const a =
+    const link =
     document.createElement("a");
 
-    a.href = url;
+    link.href =
+    URL.createObjectURL(blob);
 
-    a.download =
+    link.download =
     "backup-laundry.json";
 
-    a.click();
+    document.body.appendChild(link);
 
-    URL.revokeObjectURL(url);
+    link.click();
+
+    document.body.removeChild(link);
+
 }
-
 
 
 function importBackup(event){
