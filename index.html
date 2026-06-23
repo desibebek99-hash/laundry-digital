@@ -210,6 +210,45 @@ text-decoration:none;
 ">
 📊 Dashboard
 </a>
+
+<button
+onclick="exportBackup()"
+style="
+width:100%;
+margin-top:10px;
+background:#673AB7;
+color:white;
+padding:15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+">
+⬇ Export Backup
+</button>
+
+<button
+onclick="document.getElementById('importFile').click()"
+style="
+width:100%;
+margin-top:10px;
+background:#009688;
+color:white;
+padding:15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+">
+⬆ Import Backup
+</button>
+
+<input
+type="file"
+id="importFile"
+accept=".json"
+style="display:none"
+onchange="importBackup(event)">    
 </div>
 
 <script>
