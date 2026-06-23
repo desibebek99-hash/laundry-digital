@@ -111,6 +111,43 @@ select{
 
 <div class="top-menu">
 
+    <select
+    id="statusFilter"
+    onchange="renderLaundry()"
+    style="
+        width:100%;
+        padding:12px;
+        margin-bottom:15px;
+        border:1px solid #ccc;
+        border-radius:10px;
+    ">
+
+    <option value="Semua">
+        Semua Status
+    </option>
+
+    <option value="Diterima">
+        Diterima
+    </option>
+
+    <option value="Dicuci">
+        Dicuci
+    </option>
+
+    <option value="Disetrika">
+        Disetrika
+    </option>
+
+    <option value="Selesai">
+        Selesai
+    </option>
+
+    <option value="Diambil">
+        Diambil
+    </option>
+
+</select>
+
     <a href="index.html" class="btn">
         + Laundry Baru
     </a>
@@ -139,6 +176,9 @@ function renderLaundry(){
     document.getElementById("searchInput")
     .value
     .toLowerCase();
+    const statusFilter =
+    document.getElementById("statusFilter")
+    .value;
     
     if(laundries.length === 0){
 
@@ -165,9 +205,15 @@ function renderLaundry(){
         .toLowerCase()
         .includes(keyword);
 
-    if(!match){
-        return;
-    }
+    const statusMatch =
+
+    statusFilter === "Semua"
+    ||
+    item.status === statusFilter;
+
+if(!match || !statusMatch){
+    return;
+}
 
        html += `
 <div class="card">
