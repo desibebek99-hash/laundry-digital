@@ -313,17 +313,23 @@ function saveLaundry(){
         )
     ) || [];
 
-    laundries.push({
+   laundries.push({
 
-        invoice:invoice,
-        name:name,
-        phone:phone,
-        service:serviceName,
-        weight:weight,
-        total:total,
-        status:"Diterima",
-        date:new Date()
-        .toLocaleDateString("id-ID")
+    invoice:invoice,
+    name:name,
+    phone:phone,
+    service:serviceName,
+    weight:weight,
+    total:total,
+    status:"Diterima",
+
+    date:new Date()
+    .toLocaleDateString("id-ID"),
+
+    dateISO:new Date()
+    .toISOString()
+    .split("T")[0]
+
 
     });
 
