@@ -77,6 +77,7 @@ body{
     border:1px solid #ccc;
     border-radius:8px;
     margin-bottom:10px;
+    box-sizing:border-box;
 }
 
 .filter-box button{
@@ -138,19 +139,25 @@ body{
 
 const laundries =
 JSON.parse(
-    localStorage.getItem("laundries")
+localStorage.getItem("laundries")
 ) || [];
+
+function loadDashboard(){
+
 const dateFrom =
 document.getElementById("dateFrom").value;
 
 const dateTo =
 document.getElementById("dateTo").value;
+
+let totalTransaksi = 0;
 let totalKg = 0;
 let totalPendapatan = 0;
 let belumDiambil = 0;
+
 laundries.forEach(item => {
 
-    let itemDate =
+    const itemDate =
     item.dateISO || "";
 
     if(dateFrom && itemDate < dateFrom){
@@ -162,14 +169,23 @@ laundries.forEach(item => {
     }
 
     totalTransaksi++;
-    totalPendapatan += item.total;
+
+    totalKg +=
+    parseFloat(item.weight || 0);
+
+    totalPendapatan +=
+    parseInt(item.total || 0);
+
+    if(item.status !== "Diambil"){
+        belumDiambil++;
+    }
 
 });
 
 document.getElementById(
     "totalTransaksi"
 ).innerHTML =
-laundries.length;
+totalTransaksi;
 
 document.getElementById(
     "totalKg"
@@ -186,6 +202,10 @@ document.getElementById(
     "belumDiambil"
 ).innerHTML =
 belumDiambil;
+
+}
+
+loadDashboard();
 
 </script>
 
