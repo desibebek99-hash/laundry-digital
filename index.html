@@ -422,7 +422,110 @@ function saveLaundry(){
 }
 
 calculateTotal();
+function exportBackup(){
 
+    const backupData = {
+
+        lastLaundryNumber:
+        localStorage.getItem(
+            "lastLaundryNumber"
+        ) || 0,
+
+        laundries:
+        JSON.parse(
+            localStorage.getItem(
+                "laundries"
+            )
+        ) || []
+
+    };
+
+    const dataStr =
+    JSON.stringify(
+        backupData,
+        null,
+        2
+    );
+
+    const blob =
+    new Blob(
+        [dataStr],
+        {
+            type:"application/json"
+        }
+    );
+
+    const url =
+    URL.createObjectURL(blob);
+
+    const a =
+    document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+    "backup-laundry.json";
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+
+
+function importBackup(event){
+
+    const file =
+    event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    const reader =
+    new FileReader();
+
+    reader.onload =
+    function(e){
+
+        try{
+
+            const data =
+            JSON.parse(
+                e.target.result
+            );
+
+            localStorage.setItem(
+                "lastLaundryNumber",
+                data.lastLaundryNumber || 0
+            );
+
+            localStorage.setItem(
+                "laundries",
+                JSON.stringify(
+                    data.laundries || []
+                )
+            );
+
+            alert(
+                "Backup berhasil diimport"
+            );
+
+            location.reload();
+
+        }catch(err){
+
+            alert(
+                "File backup tidak valid"
+            );
+
+        }
+
+    };
+
+    reader.readAsText(file);
+
+}
 </script>
 
 </body>
