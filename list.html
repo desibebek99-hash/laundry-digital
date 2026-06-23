@@ -236,6 +236,22 @@ function renderLaundry(){
         📱 WhatsApp Pelanggan
     </button>
 
+<button
+    onclick="deleteLaundry(${index})"
+    style="
+        width:100%;
+        margin-top:8px;
+        padding:12px;
+        border:none;
+        border-radius:10px;
+        background:#f44336;
+        color:white;
+        cursor:pointer;
+        font-size:16px;
+    ">
+    🗑 Hapus Transaksi
+</button>
+
 </div>
 `;
     });
@@ -287,8 +303,32 @@ Terima kasih.`;
     window.open(url,"_blank");
 }
 
+function deleteLaundry(index){
+
+    let item = laundries[index];
+
+    let konfirmasi = confirm(
+        "Hapus nota " +
+        item.invoice +
+        " ?"
+    );
+
+    if(!konfirmasi){
+        return;
+    }
+
+    laundries.splice(index,1);
+
+    localStorage.setItem(
+        "laundries",
+        JSON.stringify(laundries)
+    );
+
+    renderLaundry();
+
+}
+
 renderLaundry();
 </script>
-
 </body>
 </html>
