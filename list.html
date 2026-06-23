@@ -241,8 +241,6 @@ function renderLaundry(){
     });
 
     container.innerHTML = html;
-}
-
 function changeStatus(index,status){
 
     laundries[index].status = status;
@@ -254,8 +252,39 @@ function changeStatus(index,status){
 
 }
 
-renderLaundry();
+function sendWA(index){
 
+    let item = laundries[index];
+
+    if(!item.phone){
+
+        alert("Nomor HP pelanggan kosong");
+        return;
+
+    }
+
+    let hp =
+    item.phone.replace(/^0/, "62");
+
+    let pesan =
+`Halo ${item.name},
+
+Laundry Anda dengan nomor nota ${item.invoice}
+
+sudah selesai dan siap diambil.
+
+Terima kasih.`;
+
+    let url =
+    "https://wa.me/" +
+    hp +
+    "?text=" +
+    encodeURIComponent(pesan);
+
+    window.open(url,"_blank");
+}
+
+renderLaundry();
 </script>
 
 </body>
