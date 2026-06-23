@@ -157,9 +157,10 @@ let belumDiambil = 0;
 
 laundries.forEach(item => {
 
-    const itemDate =
-    item.dateISO || "";
-
+   const itemDate =
+   item.dateISO ||
+   convertDate(item.date);
+    
     if(dateFrom && itemDate < dateFrom){
         return;
     }
@@ -204,7 +205,23 @@ document.getElementById(
 belumDiambil;
 
 }
+function convertDate(dateStr){
 
+    if(!dateStr) return "";
+
+    const parts = dateStr.split("/");
+
+    if(parts.length !== 3){
+        return "";
+    }
+
+    return (
+        parts[2] + "-" +
+        parts[1].padStart(2,"0") + "-" +
+        parts[0].padStart(2,"0")
+    );
+
+}
 loadDashboard();
 
 </script>
